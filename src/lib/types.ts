@@ -13,6 +13,7 @@ export type TPetContext = {
   pets: Pet[];
   selectedPetId: string | null;
   handleChangeSelectedPetId: (id: string) => void;
+  selectedPet: Pet | undefined;
 };
 
 export type PetContextProviderProps = {
