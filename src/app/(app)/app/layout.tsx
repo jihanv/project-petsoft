@@ -2,6 +2,7 @@ import AppFooter from "@/components/app-footer";
 import AppHeader from "@/components/app-header";
 import BackgroundPattern from "@/components/background-pattern";
 import PetContextProvider from "@/contexts/pet-context-provider";
+import { Pet } from "@/lib/types";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     const response = await fetch("https://bytegrad.com/course-assets/projects/petsoft/api/pets")
@@ -11,7 +12,7 @@ export default async function Layout({ children }: { children: React.ReactNode }
         throw new Error("Could not fetch pets")
     }
 
-    const data = await response.json()
+    const data: Pet[] = await response.json()
     return (
         <>
             <BackgroundPattern />
