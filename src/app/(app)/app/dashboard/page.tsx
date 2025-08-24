@@ -1,21 +1,11 @@
 import Branding from "@/components/branding";
 import ContentBlock from "@/components/content-block";
-import H1 from "@/components/h1"
 import PetDetails from "@/components/pet-details";
 import PetList from "@/components/pet-list";
 import SearchForm from "@/components/search-form";
 import Stats from "@/components/stats";
 
 export default async function Home() {
-
-    const response = await fetch("https://bytegrad.com/course-assets/projects/petsoft/api/pets")
-
-    //Check if everything is ok with the data fetch
-    if (!response.ok) {
-        throw new Error("Could not fetch pets")
-    }
-
-    const data = await response.json()
 
     return (
         <main>
@@ -30,7 +20,7 @@ export default async function Home() {
                 </div>
                 <div className="md:row-start-2 md:row-span-full md:col-start-1 md:col-span-1">
                     <ContentBlock>
-                        <PetList pets={data} />
+                        <PetList />
                     </ContentBlock>
                 </div>
                 <div className="md:row-start-1 md:row-span-full md:col-start-2 md:col-span-full">
