@@ -13,6 +13,7 @@ export default function PetContextProvider({ children, data }: PetContextProvide
 
     //Derived State
     const selectedPet = pets.find(pet => pet.id === selectedPetId)
+    const numberOfPets = pets.length;
 
     const handleChangeSelectedPetId = (id: string) => {
         setSelectedPetId(id)
@@ -23,7 +24,8 @@ export default function PetContextProvider({ children, data }: PetContextProvide
                 pets,
                 selectedPetId,
                 handleChangeSelectedPetId,
-                selectedPet
+                selectedPet,
+                numberOfPets
 
             }}>
             {children}
