@@ -1,16 +1,17 @@
-import { PlusIcon } from "lucide-react";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
 
 export type PetButtonProps = {
     children?: React.ReactNode;
     actionType: "add" | "edit" | "checkout";
+    onClick?: () => void;
 }
 
-export default function PetButton({ actionType, children }: PetButtonProps) {
+export default function PetButton({ actionType, children, onClick }: PetButtonProps) {
 
     if (actionType === "add") {
         return (<Button size="icon">
-            <PlusIcon className="h-6 w-6" />
+            <PlusIcon className="!h-6 !w-6" />
         </Button>)
     }
 
@@ -23,7 +24,7 @@ export default function PetButton({ actionType, children }: PetButtonProps) {
 
     if (actionType === "checkout") {
         return (
-            <Button variant="secondary">
+            <Button onClick={onClick} variant="secondary">
                 {children}
             </Button>)
     }

@@ -18,12 +18,19 @@ export default function PetContextProvider({ children, data }: PetContextProvide
     const handleChangeSelectedPetId = (id: string) => {
         setSelectedPetId(id)
     }
+
+    const handleCheckoutPet = (id: string) => {
+
+        setPets(pets.filter(pet => id !== pet.id))
+        setSelectedPetId(null)
+    }
     return (
         <PetContext.Provider
             value={{
                 pets,
                 selectedPetId,
                 handleChangeSelectedPetId,
+                handleCheckoutPet,
                 selectedPet,
                 numberOfPets
 
