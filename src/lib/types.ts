@@ -16,6 +16,7 @@ export type TPetContext = {
   handleCheckoutPet: (id: string) => void;
   selectedPet: Pet | undefined;
   numberOfPets: number;
+  handleAddPet: (newPet: Pet) => void;
 };
 
 export type PetContextProviderProps = {

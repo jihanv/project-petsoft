@@ -15,15 +15,24 @@ export default function PetContextProvider({ children, data }: PetContextProvide
     const selectedPet = pets.find(pet => pet.id === selectedPetId)
     const numberOfPets = pets.length;
 
+
+    //Event handlers
+
+    const handleAddPet = (newPet: Pet) => {
+
+        setPets(prev => [...prev, newPet])
+
+    }
+
     const handleChangeSelectedPetId = (id: string) => {
         setSelectedPetId(id)
     }
 
     const handleCheckoutPet = (id: string) => {
-
         setPets(pets.filter(pet => id !== pet.id))
         setSelectedPetId(null)
     }
+
     return (
         <PetContext.Provider
             value={{
@@ -32,7 +41,8 @@ export default function PetContextProvider({ children, data }: PetContextProvide
                 handleChangeSelectedPetId,
                 handleCheckoutPet,
                 selectedPet,
-                numberOfPets
+                numberOfPets,
+                handleAddPet
 
             }}>
             {children}
