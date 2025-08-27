@@ -1,37 +1,36 @@
-"use client"
+"use client";
 
 import { Pet, PetContextProviderProps, TPetContext } from "@/lib/types";
-import { createContext, useState } from "react"
+import { createContext, useState } from "react";
 
-export const PetContext = createContext<TPetContext | null>(null)
+export const PetContext = createContext<TPetContext | null>(null);
 
-export default function PetContextProvider({ children, data }: PetContextProviderProps) {
-
+export default function PetContextProvider({
+    children,
+    data,
+}: PetContextProviderProps) {
     //State
-    const [pets, setPets] = useState(data)
-    const [selectedPetId, setSelectedPetId] = useState<string | null>(null)
+    const [pets, setPets] = useState(data);
+    const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
     //Derived State
-    const selectedPet = pets.find(pet => pet.id === selectedPetId)
+    const selectedPet = pets.find((pet) => pet.id === selectedPetId);
     const numberOfPets = pets.length;
-
 
     //Event handlers
 
-    const handleAddPet = (newPet: Pet) => {
-
-        setPets(prev => [...prev, newPet])
-
-    }
+    const handleAddPet = (newPet: Omit<Pet, "id">) => {
+        setPets((prev) => [...prev, { ...newPet, id: Date.now().toString() }]);
+    };
 
     const handleChangeSelectedPetId = (id: string) => {
-        setSelectedPetId(id)
-    }
+        setSelectedPetId(id);
+    };
 
     const handleCheckoutPet = (id: string) => {
-        setPets(pets.filter(pet => id !== pet.id))
-        setSelectedPetId(null)
-    }
+        setPets(pets.filter((pet) => id !== pet.id));
+        setSelectedPetId(null);
+    };
 
     return (
         <PetContext.Provider
@@ -42,10 +41,10 @@ export default function PetContextProvider({ children, data }: PetContextProvide
                 handleCheckoutPet,
                 selectedPet,
                 numberOfPets,
-                handleAddPet
-
-            }}>
+                handleAddPet,
+            }}
+        >
             {children}
         </PetContext.Provider>
-    )
+    );
 }
