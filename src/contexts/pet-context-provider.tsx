@@ -19,6 +19,22 @@ export default function PetContextProvider({
 
     //Event handlers
 
+    const handleEditPet = (petId: string, newPetData: Omit<Pet, "id">) => {
+
+        setPets((prev) =>
+            prev.map((pet) => {
+                if (pet.id === petId) {
+                    return {
+                        ...pet,
+                        ...newPetData
+                    }
+                }
+                return pet
+            })
+        )
+
+    }
+
     const handleAddPet = (newPet: Omit<Pet, "id">) => {
         setPets((prev) => [...prev, { ...newPet, id: Date.now().toString() }]);
     };
@@ -42,6 +58,7 @@ export default function PetContextProvider({
                 selectedPet,
                 numberOfPets,
                 handleAddPet,
+                handleEditPet
             }}
         >
             {children}

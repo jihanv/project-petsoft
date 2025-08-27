@@ -17,6 +17,7 @@ export type TPetContext = {
   selectedPet: Pet | undefined;
   numberOfPets: number;
   handleAddPet: (newPet: Omit<Pet, "id">) => void;
+  handleEditPet: (id: string, newPetData: Omit<Pet, "id">) => void;
 };
 
 export type PetContextProviderProps = {
