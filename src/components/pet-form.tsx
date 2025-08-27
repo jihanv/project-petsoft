@@ -1,4 +1,3 @@
-"use client"
 
 import { usePetContext } from "@/lib/hooks";
 import { Button } from "./ui/button";
@@ -8,9 +7,10 @@ import { Textarea } from "./ui/textarea";
 
 export type PetFormProps = {
     actionType: "add" | "edit";
+    onFormSubmission: () => void;
 }
 
-export default function PetForm({ actionType }: PetFormProps) {
+export default function PetForm({ actionType, onFormSubmission }: PetFormProps) {
 
     const { handleAddPet, numberOfPets } = usePetContext();
 
@@ -33,6 +33,7 @@ export default function PetForm({ actionType }: PetFormProps) {
         }
 
         handleAddPet(newPet);
+        onFormSubmission();
 
 
 
