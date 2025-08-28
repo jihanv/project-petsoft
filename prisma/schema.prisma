@@ -20,3 +20,10 @@ model Pet {
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 }
+
+//npx prisma db push
+//npx prisma db migrate
+
+//npx prisma studio
+
+// https://www.prisma.io/docs/orm/more/help-and-troubleshooting/nextjs-help (best practices)
