@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 const pets = [
   {
-    name: "Benjamin",
+    name: "Ben",
     ownerName: "John Doe",
     imageUrl: "/rn-image-4.png",
     age: 2,
