@@ -13,11 +13,11 @@ export type TPetContext = {
   pets: Pet[];
   selectedPetId: string | null;
   handleChangeSelectedPetId: (id: string) => void;
-  handleCheckoutPet: (id: string) => void;
+  // handleCheckoutPet: (id: string) => void;
   selectedPet: Pet | undefined;
   numberOfPets: number;
-  handleAddPet: (newPet: Omit<Pet, "id">) => void;
-  handleEditPet: (id: string, newPetData: Omit<Pet, "id">) => void;
+  // handleAddPet: (newPet: Omit<Pet, "id">) => void;
+  // handleEditPet: (id: string, newPetData: Omit<Pet, "id">) => void;
 };
 
 export type PetContextProviderProps = {

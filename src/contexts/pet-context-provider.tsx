@@ -21,37 +21,37 @@ export default function PetContextProvider({
 
     //Event handlers
 
-    const handleEditPet = (petId: string, newPetData: Omit<Pet, "id">) => {
+    // const handleEditPet = (petId: string, newPetData: Omit<Pet, "id">) => {
 
-        setPets((prev) =>
-            prev.map((pet) => {
-                if (pet.id === petId) {
-                    return {
-                        ...pet,
-                        ...newPetData
-                    }
-                }
-                return pet
-            })
-        )
+    //     setPets((prev) =>
+    //         prev.map((pet) => {
+    //             if (pet.id === petId) {
+    //                 return {
+    //                     ...pet,
+    //                     ...newPetData
+    //                 }
+    //             }
+    //             return pet
+    //         })
+    //     )
 
-    }
+    // }
 
-    const handleAddPet = async (newPet: Omit<Pet, "id">) => {
-        // setPets((prev) => [...prev, { ...newPet, id: Date.now().toString() }]);
+    // const handleAddPet = async (newPet: Omit<Pet, "id">) => {
+    //     // setPets((prev) => [...prev, { ...newPet, id: Date.now().toString() }]);
 
-        //call function that only happens in server triggered from client 
-        await addPet(newPet)
-    };
+    //     //call function that only happens in server triggered from client 
+    //     await addPet(newPet)
+    // };
 
     const handleChangeSelectedPetId = (id: string) => {
         setSelectedPetId(id);
     };
 
-    const handleCheckoutPet = (id: string) => {
-        setPets(pets.filter((pet) => id !== pet.id));
-        setSelectedPetId(null);
-    };
+    // const handleCheckoutPet = (id: string) => {
+    //     setPets(pets.filter((pet) => id !== pet.id));
+    //     setSelectedPetId(null);
+    // };
 
     return (
         <PetContext.Provider
@@ -59,11 +59,8 @@ export default function PetContextProvider({
                 pets,
                 selectedPetId,
                 handleChangeSelectedPetId,
-                handleCheckoutPet,
                 selectedPet,
                 numberOfPets,
-                handleAddPet,
-                handleEditPet
             }}
         >
             {children}
