@@ -1,12 +1,12 @@
 
 import { usePetContext } from "@/lib/hooks";
-import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Textarea } from "./ui/textarea";
 import { addPet } from "@/actions/actions";
 import PetFormBtn from "./pet-form-btn";
-import { act } from "react";
+import { toast } from "sonner";
+import { useFormState } from "react-dom";
 
 export type PetFormProps = {
     actionType: "add" | "edit";
@@ -15,39 +15,15 @@ export type PetFormProps = {
 
 export default function PetForm({ actionType, onFormSubmission }: PetFormProps) {
 
-    const { handleAddPet, selectedPet, handleEditPet } = usePetContext();
-
-    // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-
-    //     event.preventDefault();
-
-    //     const formData = new FormData(event.currentTarget);
-
-    //     //Wrap form data in a javascript object
-    //     // const newPet = Object.fromEntries(formData.entries())
-
-    //     const pet = {
-    //         name: formData.get("name") as string,
-    //         ownerName: formData.get("ownerName") as string,
-    //         imageUrl: formData.get("imageUrl") as string || "/pet-placeholder.png",
-    //         age: +(formData.get("age") as string),
-    //         notes: formData.get("notes") as string,
-    //     }
-
-    //     if (actionType === "add") {
-    //         handleAddPet(pet);
-    //     } else if (actionType === "edit") {
-    //         handleEditPet(selectedPet!.id, pet)
-    //     }
-
-    //     onFormSubmission();
-
-    // }
-
+    const { selectedPet } = usePetContext();
 
     return (
         <form action={async (formData) => {
-            addPet(formData)
+            const error = await addPet(formData)
+            if (error) {
+                toast.warning(error.message)
+                return;
+            }
             onFormSubmission();
         }} className="flex flex-col">
             <div className="space-y-3">
