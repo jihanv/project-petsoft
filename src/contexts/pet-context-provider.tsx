@@ -17,7 +17,10 @@ export default function PetContextProvider({
     const [optimisticPets, setOptimisticPets] = useOptimistic(
         data,
         (state, newPetData) => {
-            return [...state, newPetData]
+            return [...state, {
+                ...newPetData,
+                id: Math.random().toString()
+            }]
         })
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
