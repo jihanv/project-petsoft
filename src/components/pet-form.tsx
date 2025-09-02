@@ -14,23 +14,24 @@ export type PetFormProps = {
 
 export default function PetForm({ actionType, onFormSubmission }: PetFormProps) {
 
-    const { selectedPet } = usePetContext();
+    const { selectedPet, handleAddPet, handleEditPet } = usePetContext();
 
     return (
         <form action={async (formData) => {
 
+            const petData = {
+                name: formData.get("name") as string,
+                ownerName: formData.get("ownerName") as string,
+                imageUrl:
+                    (formData.get("imageUrl") as string) || "/pet-placeholder.png",
+                age: parseInt(formData.get("age") as string),
+                notes: formData.get("notes") as string,
+            }
+
             if (actionType === "add") {
-                const error = await addPet(formData)
-                if (error) {
-                    toast.warning(error.message)
-                    return;
-                }
+                await handleAddPet(petData)
             } else if (actionType === "edit") {
-                const error = await editPet(selectedPet!.id, formData)
-                if (error) {
-                    toast.warning(error.message)
-                    return;
-                }
+                await handleEditPet(selectedPet!.id, petData)
             }
             onFormSubmission();
         }} className="flex flex-col">

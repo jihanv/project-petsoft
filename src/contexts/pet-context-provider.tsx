@@ -1,66 +1,71 @@
 "use client";
 
-import { addPet } from "@/actions/actions";
+import { addPet, deletePet, editPet } from "@/actions/actions";
 import { Pet, PetContextProviderProps, TPetContext } from "@/lib/types";
-import { createContext, useState } from "react";
+import { createContext, startTransition, useOptimistic, useState } from "react";
+import { toast } from "sonner";
 
 export const PetContext = createContext<TPetContext | null>(null);
 
 export default function PetContextProvider({
     children,
-    data: pets,
+    data,
 }: PetContextProviderProps) {
     //State
     // const [pets, setPets] = useState(data);
 
+    const [optimisticPets, setOptimisticPets] = useOptimistic(data)
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
     //Derived State
-    const selectedPet = pets.find((pet) => pet.id === selectedPetId);
-    const numberOfPets = pets.length;
+    const selectedPet = optimisticPets.find((pet) => pet.id === selectedPetId);
+    const numberOfPets = optimisticPets.length;
 
     //Event handlers
 
-    // const handleEditPet = (petId: string, newPetData: Omit<Pet, "id">) => {
+    const handleEditPet = async (petId: string, newPetData: Omit<Pet, "id">) => {
+        const error = await editPet(petId, newPetData)
+        if (error) {
+            toast.warning(error.message)
+            return;
+        }
 
-    //     setPets((prev) =>
-    //         prev.map((pet) => {
-    //             if (pet.id === petId) {
-    //                 return {
-    //                     ...pet,
-    //                     ...newPetData
-    //                 }
-    //             }
-    //             return pet
-    //         })
-    //     )
+    }
 
-    // }
+    const handleAddPet = async (newPet: Omit<Pet, "id">) => {
 
-    // const handleAddPet = async (newPet: Omit<Pet, "id">) => {
-    //     // setPets((prev) => [...prev, { ...newPet, id: Date.now().toString() }]);
+        //call function that only happens in server triggered from client 
 
-    //     //call function that only happens in server triggered from client 
-    //     await addPet(newPet)
-    // };
+        const error = await addPet(newPet)
+        if (error) {
+            toast.warning(error.message)
+            return;
+        }
+        await addPet(newPet)
+    };
 
     const handleChangeSelectedPetId = (id: string) => {
         setSelectedPetId(id);
     };
 
-    // const handleCheckoutPet = (id: string) => {
-    //     setPets(pets.filter((pet) => id !== pet.id));
-    //     setSelectedPetId(null);
-    // };
+    const handleCheckoutPet = async (petId: string) => {
+
+        await deletePet(petId)
+
+        setSelectedPetId(null);
+    };
 
     return (
         <PetContext.Provider
             value={{
-                pets,
+                pets: optimisticPets,
                 selectedPetId,
                 handleChangeSelectedPetId,
                 selectedPet,
                 numberOfPets,
+                handleAddPet,
+                handleEditPet,
+                handleCheckoutPet
             }}
         >
             {children}
