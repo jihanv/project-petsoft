@@ -14,7 +14,11 @@ export default function PetContextProvider({
     //State
     // const [pets, setPets] = useState(data);
 
-    const [optimisticPets, setOptimisticPets] = useOptimistic(data)
+    const [optimisticPets, setOptimisticPets] = useOptimistic(
+        data,
+        (state, newPetData) => {
+            return [...state, newPetData]
+        })
     const [selectedPetId, setSelectedPetId] = useState<string | null>(null);
 
     //Derived State
@@ -24,6 +28,7 @@ export default function PetContextProvider({
     //Event handlers
 
     const handleEditPet = async (petId: string, newPetData: Omit<Pet, "id">) => {
+
         const error = await editPet(petId, newPetData)
         if (error) {
             toast.warning(error.message)
@@ -35,13 +40,12 @@ export default function PetContextProvider({
     const handleAddPet = async (newPet: Omit<Pet, "id">) => {
 
         //call function that only happens in server triggered from client 
-
+        setOptimisticPets(newPet)
         const error = await addPet(newPet)
         if (error) {
             toast.warning(error.message)
             return;
         }
-        await addPet(newPet)
     };
 
     const handleChangeSelectedPetId = (id: string) => {
