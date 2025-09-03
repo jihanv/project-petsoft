@@ -1,9 +1,11 @@
 "use client";
 
 import { addPet, deletePet, editPet } from "@/actions/actions";
-import { Pet, PetContextProviderProps, TPetContext } from "@/lib/types";
+import { PetContextProviderProps, PetEssentials, TPetContext } from "@/lib/types";
 import { createContext, startTransition, useOptimistic, useState } from "react";
 import { toast } from "sonner";
+import { Pet } from "@prisma/client";
+
 
 export const PetContext = createContext<TPetContext | null>(null);
 
@@ -41,7 +43,7 @@ export default function PetContextProvider({
 
     //Event handlers
 
-    const handleEditPet = async (petId: string, newPetData: Omit<Pet, "id">) => {
+    const handleEditPet = async (petId: Pet["id"], newPetData: PetEssentials) => {
         setOptimisticPets({
             action: "edit",
             payload: {
@@ -58,7 +60,7 @@ export default function PetContextProvider({
 
     }
 
-    const handleAddPet = async (newPet: Omit<Pet, "id">) => {
+    const handleAddPet = async (newPet: PetEssentials) => {
 
         //call function that only happens in server triggered from client 
         setOptimisticPets({
@@ -72,18 +74,21 @@ export default function PetContextProvider({
         }
     };
 
-    const handleChangeSelectedPetId = (id: string) => {
+    const handleChangeSelectedPetId = (id: Pet["id"]) => {
         setSelectedPetId(id);
     };
 
-    const handleCheckoutPet = async (petId: string) => {
+    const handleCheckoutPet = async (petId: Pet["id"]) => {
         setOptimisticPets({
             action: "delete",
             payload: petId,
         })
 
-        await deletePet(petId)
-
+        const error = await deletePet(petId)
+        if (error) {
+            toast.warning(error.message)
+            return;
+        }
         setSelectedPetId(null);
     };
 
