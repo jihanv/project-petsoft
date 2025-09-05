@@ -6,6 +6,26 @@ import { Textarea } from "./ui/textarea";
 import { addPet, editPet } from "@/actions/actions";
 import PetFormBtn from "./pet-form-btn";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+//Validation through Zod
+const petFormSchema = z.object({
+    name: z.string().trim().min(1, {
+        message: "Name is required"
+    })
+        .max(100, {
+            message: "Name should be less than 100 characters"
+        }),
+    ownerName: z.string().trim().min(1, {
+        message: "Owner Name is required"
+    })
+        .max(100, {
+            message: "Owner Name should be less than 100 characters"
+        }),
+    imageUrl: z.union([z.literal(""), z.string().trim().url({ message: "Image url must be a valid url" })]),
+    age: z.coerce.number().int().positive().max(50),
+    notes: z.union([z.literal(""), z.string().trim().max(1000)])
+})
 
 export type PetFormProps = {
     actionType: "add" | "edit";
@@ -60,34 +80,19 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
             <div className="space-y-3">
                 <div className="space-y-1">
                     <Label htmlFor="name">Name</Label>
-                    <Input id="name" {...register("name", {
-                        required: "Name is required",
-                        minLength: {
-                            value: 3,
-                            message: "Name must be at least 3 characters long."
-                        },
-
-                    })} ></Input>
+                    <Input id="name" {...register("name")} ></Input>
                     {errors.name && <p className="text-red-500">{errors.name.message}</p>}
                 </div>
 
                 <div className="space-y-1">
                     <Label htmlFor="ownerName">Owner Name</Label>
-                    <Input id="ownerName" {...register("ownerName", {
-                        required: "Owner Name is required",
-                        maxLength: {
-                            value: 10,
-                            message: "Owner Name must be less than 20 characters long."
-                        },
-                    })} ></Input>
+                    <Input id="ownerName" {...register("ownerName")} ></Input>
                     {errors.ownerName && <p className="text-red-500">{errors.ownerName.message}</p>}
                 </div>
 
                 <div className="space-y-1">
                     <Label htmlFor="imageUrl">Image URL</Label>
-                    <Input id="imageUrl" {...register("imageUrl", {
-
-                    })} ></Input>
+                    <Input id="imageUrl" {...register("imageUrl")} ></Input>
                     {errors.imageUrl && <p className="text-red-500">{errors.imageUrl.message}</p>}
                 </div>
 
