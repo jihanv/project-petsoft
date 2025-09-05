@@ -28,18 +28,21 @@ const petFormSchema = z.object({
     notes: z.union([z.literal(""), z.string().trim().max(1000)])
 })
 
+type TPetFormData = z.infer<typeof petFormSchema>
+
 export type PetFormProps = {
     actionType: "add" | "edit";
     onFormSubmission: () => void;
 }
 
-type TPetFormData = {
-    name: string;
-    ownerName: string;
-    imageUrl: string;
-    age: number;
-    notes: string;
-}
+// type TPetFormData = {
+//     name: string;
+//     ownerName: string;
+//     imageUrl: string;
+//     age: number;
+//     notes: string;
+// }
+
 
 export default function PetForm({ actionType, onFormSubmission }: PetFormProps) {
 
