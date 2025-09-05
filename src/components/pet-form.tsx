@@ -6,35 +6,11 @@ import { Textarea } from "./ui/textarea";
 import { addPet, editPet } from "@/actions/actions";
 import PetFormBtn from "./pet-form-btn";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
+import { DEFAULT_PET_IMAGE } from "@/lib/constants";
+import { petFormSchema, TPetFormData } from "@/lib/validations";
 
-//Validation through Zod
-const petFormSchema = z.object({
-    name: z
-        .string()
-        .trim()
-        .min(1, {
-            message: "Name is required"
-        })
-        .max(100, {
-            message: "Name should be less than 100 characters"
-        }),
-    ownerName: z
-        .string()
-        .trim()
-        .min(1, {
-            message: "Owner Name is required"
-        })
-        .max(100, {
-            message: "Owner Name should be less than 100 characters"
-        }),
-    imageUrl: z.union([z.literal(""), z.string().trim().url({ message: "Image url must be a valid url" })]),
-    age: z.coerce.number().int().positive().max(50),
-    notes: z.union([z.literal(""), z.string().trim().max(1000)])
-})
 
-type TPetFormData = z.infer<typeof petFormSchema>
 
 export type PetFormProps = {
     actionType: "add" | "edit";
@@ -73,8 +49,11 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
                 return
             }
 
+
             onFormSubmission();
             const petData = getValues()
+
+            petData.imageUrl = petData.imageUrl || DEFAULT_PET_IMAGE
 
             if (actionType === "add") {
                 await handleAddPet(petData)
