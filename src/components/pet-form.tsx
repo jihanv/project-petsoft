@@ -7,6 +7,7 @@ import { addPet, editPet } from "@/actions/actions";
 import PetFormBtn from "./pet-form-btn";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { zodResolver } from '@hookform/resolvers/zod';
 
 //Validation through Zod
 const petFormSchema = z.object({
@@ -50,8 +51,10 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
         formState: {
             errors,
         }
-    } = useForm<TPetFormData>()
-
+    } = useForm<TPetFormData>({
+        //install resolver: pnpm add @hookform/resolvers/3.3.2
+        resolver: zodResolver(petFormSchema)
+    })
     return (
         <form action={async (formData) => {
             // Validate the form, you must include trigger
