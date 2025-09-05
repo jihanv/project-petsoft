@@ -11,15 +11,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 //Validation through Zod
 const petFormSchema = z.object({
-    name: z.string().trim().min(1, {
-        message: "Name is required"
-    })
+    name: z
+        .string()
+        .trim()
+        .min(1, {
+            message: "Name is required"
+        })
         .max(100, {
             message: "Name should be less than 100 characters"
         }),
-    ownerName: z.string().trim().min(1, {
-        message: "Owner Name is required"
-    })
+    ownerName: z
+        .string()
+        .trim()
+        .min(1, {
+            message: "Owner Name is required"
+        })
         .max(100, {
             message: "Owner Name should be less than 100 characters"
         }),
@@ -51,6 +57,7 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
     const {
         register,
         trigger,
+        getValues,
         formState: {
             errors,
         }
@@ -67,14 +74,7 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
             }
 
             onFormSubmission();
-            const petData = {
-                name: formData.get("name") as string,
-                ownerName: formData.get("ownerName") as string,
-                imageUrl:
-                    (formData.get("imageUrl") as string) || "/pet-placeholder.png",
-                age: parseInt(formData.get("age") as string),
-                notes: formData.get("notes") as string,
-            }
+            const petData = getValues()
 
             if (actionType === "add") {
                 await handleAddPet(petData)
