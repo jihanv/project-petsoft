@@ -2,6 +2,8 @@ import { z } from "zod";
 import { DEFAULT_PET_IMAGE } from "./constants";
 //Validation through Zod
 
+export const petIdSchema = z.string().cuid();
+
 export const petFormSchema = z
   .object({
     name: z
@@ -10,8 +12,8 @@ export const petFormSchema = z
       .min(1, {
         message: "Name is required",
       })
-      .max(100, {
-        message: "Name should be less than 100 characters",
+      .max(10, {
+        message: "Name should be less than 10 characters",
       }),
     ownerName: z
       .string()
