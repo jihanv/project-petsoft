@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 ///
-export async function addPet(petData: PetEssentials) {
+export async function addPet(petData: unknown) {
   await sleep();
 
   const validatedPet = petFormSchema.safeParse(petData);
