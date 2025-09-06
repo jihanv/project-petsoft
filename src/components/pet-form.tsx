@@ -39,10 +39,18 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
         }
     } = useForm<TPetFormData>({
         //install resolver: pnpm add @hookform/resolvers/3.3.2
-        resolver: zodResolver(petFormSchema)
+        resolver: zodResolver(petFormSchema),
+        defaultValues: {
+            name: selectedPet?.name,
+            ownerName: selectedPet?.ownerName,
+            imageUrl: selectedPet?.imageUrl,
+            age: selectedPet?.age,
+            notes: selectedPet?.notes
+        }
     })
+
     return (
-        <form action={async (formData) => {
+        <form action={async () => {
             // Validate the form, you must include trigger
             const result = await trigger();
             if (!result) {
