@@ -1,13 +1,6 @@
-import { NextResponse } from "next/server";
+import { auth } from "./lib/auth";
 
-export function middleware(request: Request) {
-  //Get url the user is using.
-  request.url;
-
-  console.log(request.url);
-
-  return NextResponse.next();
-}
+export default auth;
 
 export const config = {
   matcher: [
