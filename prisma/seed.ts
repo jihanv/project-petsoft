@@ -38,6 +38,7 @@ async function main() {
   console.log(`Start seeding ...`);
 
   const hashedPassword = await bcrypt.hash("example", 10);
+  userData.hashedPassword = hashedPassword;
 
   await prisma.user.create({
     data: userData,
