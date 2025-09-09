@@ -12,7 +12,7 @@ import { headers } from "next/headers";
 export async function logIn(authData: FormData) {
   const data = Object.fromEntries(authData.entries());
 
-  await signIn("credentials", authData);
+  await signIn("credentials", data);
 }
 
 // Server Actions for Pets

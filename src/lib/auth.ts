@@ -1,5 +1,5 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import credentials from "next-auth/providers/credentials";
 import { prisma } from "./db";
 import bcrypt from "bcryptjs";
 
@@ -8,7 +8,7 @@ const config = {
     signIn: "/login",
   },
   providers: [
-    Credentials({
+    credentials({
       async authorize(credentials) {
         //This will run on every login attempt
         const { email, password } = credentials;
@@ -39,12 +39,18 @@ const config = {
     }),
   ],
   callbacks: {
-    authorized: ({ request }) => {
+    authorized: ({ auth, request }) => {
       // Runs on every request with middleware
+      const isLoggedIn = Boolean(auth?.user);
       const isTryingToAccessApp = request.nextUrl.pathname.includes("/app");
-      if (isTryingToAccessApp) {
+      if (!isLoggedIn && isTryingToAccessApp) {
         return false;
-      } else {
+      }
+      if (isLoggedIn && isTryingToAccessApp) {
+        return true;
+      }
+
+      if (!isTryingToAccessApp) {
         return true;
       }
     },
