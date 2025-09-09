@@ -1,5 +1,6 @@
 "use server";
 
+import { signIn } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { sleep } from "@/lib/utils";
 import { petFormSchema, petIdSchema } from "@/lib/validations";
@@ -8,7 +9,11 @@ import { revalidatePath } from "next/cache";
 import { headers } from "next/headers";
 
 // Server Actions for users
-export async function logIn(authData) {}
+export async function logIn(authData: FormData) {
+  const data = Object.fromEntries(authData.entries());
+
+  await signIn("credentials", authData);
+}
 
 // Server Actions for Pets
 export async function addPet(petData: unknown) {
