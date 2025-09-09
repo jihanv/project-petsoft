@@ -40,13 +40,13 @@ export default function PetForm({ actionType, onFormSubmission }: PetFormProps) 
     } = useForm<TPetFormData>({
         //install resolver: pnpm add @hookform/resolvers/3.3.2
         resolver: zodResolver(petFormSchema),
-        defaultValues: {
+        defaultValues: actionType === "edit" ? {
             name: selectedPet?.name,
             ownerName: selectedPet?.ownerName,
             imageUrl: selectedPet?.imageUrl,
             age: selectedPet?.age,
             notes: selectedPet?.notes
-        }
+        } : undefined
     })
 
     return (
