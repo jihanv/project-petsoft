@@ -1,3 +1,4 @@
+import { logIn } from "@/actions/actions";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
@@ -8,7 +9,8 @@ export type AuthProps = {
 
 export default function AuthForm({ type }: AuthProps) {
     return (
-        <form>
+        <form
+            action={logIn}>
             <div className="space-y-1">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" />

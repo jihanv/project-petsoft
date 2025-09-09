@@ -1,15 +1,16 @@
 "use server";
 
 import { prisma } from "@/lib/db";
-import { PetEssentials } from "@/lib/types";
 import { sleep } from "@/lib/utils";
 import { petFormSchema, petIdSchema } from "@/lib/validations";
-import { Pet } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 import { headers } from "next/headers";
 
-///
+// Server Actions for users
+export async function logIn(authData) {}
+
+// Server Actions for Pets
 export async function addPet(petData: unknown) {
   await sleep();
 
