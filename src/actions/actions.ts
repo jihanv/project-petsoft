@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { sleep } from "@/lib/utils";
 import { petFormSchema, petIdSchema } from "@/lib/validations";
@@ -15,6 +15,11 @@ export async function logIn(authData: FormData) {
   await signIn("credentials", data);
 }
 
+export async function logOut() {
+  await signOut({
+    redirectTo: "/",
+  });
+}
 // Server Actions for Pets
 export async function addPet(petData: unknown) {
   await sleep();
