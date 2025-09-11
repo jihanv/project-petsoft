@@ -27,6 +27,8 @@ export async function signUp(formData: FormData) {
       hashedPassword: hashedPassword,
     },
   });
+
+  await signIn("credentials", formData);
 }
 
 export async function logOut() {
