@@ -15,6 +15,8 @@ export async function logIn(authData: FormData) {
   await signIn("credentials", data);
 }
 
+export async function signUp(authData: FormData) {}
+
 export async function logOut() {
   await signOut({
     redirectTo: "/",
