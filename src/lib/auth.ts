@@ -60,6 +60,21 @@ const config = {
 
       return false;
     },
+    jwt: ({ token, user }) => {
+      //on sign in we grab id from the user and attach it to the token
+      if (user) {
+        //on sign in
+        token.userId = user.id;
+      }
+      // this is encrypted
+      return token;
+    },
+    //accessing user information from the client, attach things to session so we can read from the client
+    session: ({ session, token }) => {
+      session.user.id = token.user.id;
+
+      return session;
+    },
   },
 } satisfies NextAuthConfig;
 
