@@ -10,10 +10,8 @@ import { revalidatePath } from "next/cache";
 // import { headers } from "next/headers";
 
 // Server Actions for users
-export async function logIn(authData: FormData) {
-  const data = Object.fromEntries(authData.entries());
-
-  await signIn("credentials", data);
+export async function logIn(formData: FormData) {
+  await signIn("credentials", formData);
 }
 
 export async function signUp(formData: FormData) {
