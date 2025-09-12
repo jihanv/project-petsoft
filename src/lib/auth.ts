@@ -71,7 +71,9 @@ const config = {
     },
     //accessing user information from the client, attach things to session so we can read from the client
     session: ({ session, token }) => {
-      session.user.id = token.user.id;
+      if (session.user) {
+        session.user.id = token.userId;
+      }
 
       return session;
     },
