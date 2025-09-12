@@ -74,7 +74,6 @@ const config = {
       if (session.user) {
         session.user.id = token.userId as string;
       }
-
       return session;
     },
   },
