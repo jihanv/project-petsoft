@@ -14,6 +14,15 @@ export async function checkAuth() {
   return session;
 }
 
+export async function findUserByEmail(email: User["email"]) {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  return user;
+}
+
 export async function findPetById(petId: Pet["id"]) {
   const pet = await prisma.pet.findUnique({
     where: {
