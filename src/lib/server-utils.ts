@@ -1,6 +1,8 @@
 import "server-only";
 import { redirect } from "next/navigation";
 import { auth } from "./auth";
+import { Pet } from "@prisma/client";
+import { prisma } from "./db";
 
 export async function checkAuth() {
   const session = await auth();
@@ -10,4 +12,16 @@ export async function checkAuth() {
   }
 
   return session;
+}
+
+export async function findPetById(petId: Pet["id"]) {
+  const pet = await prisma.pet.findUnique({
+    where: {
+      id: petId,
+    },
+    select: {
+      userId: true,
+    },
+  });
+  return pet;
 }

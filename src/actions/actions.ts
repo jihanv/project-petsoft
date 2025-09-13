@@ -8,7 +8,7 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { checkAuth } from "@/lib/server-utils";
+import { checkAuth, findPetById } from "@/lib/server-utils";
 // import { headers } from "next/headers";
 
 // Server Actions for users
@@ -87,14 +87,15 @@ export async function editPet(petId: unknown, petData: unknown) {
   }
 
   // Authorization check
-  const pet = await prisma.pet.findUnique({
-    where: {
-      id: validateId.data,
-    },
-    select: {
-      userId: true,
-    },
-  });
+  const pet = await findPetById(validateId.data);
+  // const pet = await prisma.pet.findUnique({
+  //   where: {
+  //     id: validateId.data,
+  //   },
+  //   select: {
+  //     userId: true,
+  //   },
+  // });
 
   if (!pet) {
     return {
@@ -140,14 +141,15 @@ export async function deletePet(petId: unknown) {
   }
 
   // Authorization check
-  const pet = await prisma.pet.findUnique({
-    where: {
-      id: validateId.data,
-    },
-    select: {
-      userId: true,
-    },
-  });
+  const pet = await findPetById(validateId.data);
+  // const pet = await prisma.pet.findUnique({
+  //   where: {
+  //     id: validateId.data,
+  //   },
+  //   select: {
+  //     userId: true,
+  //   },
+  // });
 
   if (!pet) {
     return {
