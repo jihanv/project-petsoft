@@ -7,6 +7,7 @@ import SearchContextProvider from "@/contexts/search-context-provider";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation";
+import { checkAuth } from "@/lib/server-utils";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     // const response = await fetch("https://bytegrad.com/course-assets/projects/petsoft/api/pets")
@@ -17,10 +18,8 @@ export default async function Layout({ children }: { children: React.ReactNode }
     // }
 
     //get information about user using auth
-    const session = await auth()
-    if (!session?.user) {
-        redirect("/login")
-    }
+    const session = await checkAuth();
+
 
     console.log(session.user)
 

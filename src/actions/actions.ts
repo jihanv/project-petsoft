@@ -8,6 +8,7 @@ import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { checkAuth } from "@/lib/server-utils";
 // import { headers } from "next/headers";
 
 // Server Actions for users
@@ -39,11 +40,7 @@ export async function logOut() {
 export async function addPet(petData: unknown) {
   await sleep();
 
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/login");
-  }
+  const session = await checkAuth();
 
   const validatedPet = petFormSchema.safeParse(petData);
   if (!validatedPet.success) {
@@ -77,11 +74,7 @@ export async function editPet(petId: unknown, petData: unknown) {
   await sleep();
 
   // Authentication
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/login");
-  }
+  const session = await checkAuth();
 
   //Validata input
   const validatedPet = petFormSchema.safeParse(petData);
@@ -135,11 +128,7 @@ export async function deletePet(petId: unknown) {
   await sleep();
 
   // Authentication
-  const session = await auth();
-
-  if (!session?.user) {
-    redirect("/login");
-  }
+  const session = await checkAuth();
 
   // Validation
   const validateId = petIdSchema.safeParse(petId);
