@@ -7,7 +7,7 @@ import SearchContextProvider from "@/contexts/search-context-provider";
 import { prisma } from "@/lib/db";
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation";
-import { checkAuth } from "@/lib/server-utils";
+import { checkAuth, findPetsByUserId } from "@/lib/server-utils";
 
 export default async function Layout({ children }: { children: React.ReactNode }) {
     // const response = await fetch("https://bytegrad.com/course-assets/projects/petsoft/api/pets")
@@ -23,11 +23,13 @@ export default async function Layout({ children }: { children: React.ReactNode }
 
     console.log(session.user)
 
-    const pets = await prisma.pet.findMany({
-        where: {
-            userId: session.user.id
-        }
-    })
+    const pets = await findPetsByUserId(session.user.id)
+
+    // const pets = await prisma.pet.findMany({
+    //     where: {
+    //         userId: session.user.id
+    //     }
+    // })
 
     // const data: Pet[] = await response.json()
     return (
