@@ -3,7 +3,7 @@
 import { signIn, signOut } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { sleep } from "@/lib/utils";
-import { petFormSchema, petIdSchema } from "@/lib/validations";
+import { authSchema, petFormSchema, petIdSchema } from "@/lib/validations";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
@@ -12,7 +12,24 @@ import { checkAuth, findPetById } from "@/lib/server-utils";
 // import { headers } from "next/headers";
 
 // Server Actions for users
-export async function logIn(formData: FormData) {
+export async function logIn(formData: unknown) {
+  // Check if formData is a FormData type
+  if (!(formData instanceof FormData)) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
+  // Convert formData to an object
+  const formDataObject = Object.fromEntries(formData.entries());
+  const validatedFormDataObject = authSchema.safeParse(formDataObject);
+
+  if (!validatedFormDataObject.success) {
+    return {
+      message: "Invalid form data.",
+    };
+  }
+
   await signIn("credentials", formData);
 }
 
