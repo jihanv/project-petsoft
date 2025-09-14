@@ -10,7 +10,10 @@ import { Dispatch, SetStateAction } from "react";
 // };
 import { Pet } from "@prisma/client";
 
-export type PetEssentials = Omit<Pet, "id" | "updatedAt" | "createdAt">;
+export type PetEssentials = Omit<
+  Pet,
+  "id" | "updatedAt" | "createdAt" | "userId"
+>;
 
 export type TPetContext = {
   pets: Pet[];

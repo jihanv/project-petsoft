@@ -6,7 +6,6 @@ import { sleep } from "@/lib/utils";
 import { authSchema, petFormSchema, petIdSchema } from "@/lib/validations";
 import bcrypt from "bcryptjs";
 import { revalidatePath } from "next/cache";
-import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { checkAuth, findPetById } from "@/lib/server-utils";
 // import { headers } from "next/headers";
@@ -23,7 +22,12 @@ export async function logIn(formData: unknown) {
 
 export async function signUp(formData: unknown) {
   // Validate form data
-  const validatedFormData = authSchema.safeParse(formData);
+  if (!(formData instanceof FormData)) {
+    return;
+  }
+
+  const formDataEntries = Object.fromEntries(formData.entries());
+  const validatedFormData = authSchema.safeParse(formDataEntries);
 
   if (!validatedFormData.success) {
     return;
@@ -38,7 +42,7 @@ export async function signUp(formData: unknown) {
     },
   });
 
-  await signIn("credentials", validatedFormData.data);
+  await signIn("credentials", formData);
 }
 
 export async function logOut() {
