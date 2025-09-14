@@ -1,8 +1,8 @@
 import NextAuth, { NextAuthConfig } from "next-auth";
 import credentials from "next-auth/providers/credentials";
-import { prisma } from "./db";
 import bcrypt from "bcryptjs";
 import { findUserByEmail } from "./server-utils";
+import { authSchema } from "@/lib/validations";
 
 const config = {
   pages: {
@@ -11,17 +11,19 @@ const config = {
   providers: [
     credentials({
       async authorize(credentials) {
+        const validatedFormData = authSchema.safeParse(credentials);
+
+        // Validate object
+        if (!validatedFormData.success) {
+          return null;
+        }
+
         //This will run on every login attempt
-        const { email, password } = credentials;
+        const { email, password } = validatedFormData.data;
 
         //Check with the database
 
         const user = await findUserByEmail(email);
-        // const user = await prisma.user.findUnique({
-        //   where: {
-        //     email: email,
-        //   },
-        // });
 
         if (!user) {
           console.log("No user found.");

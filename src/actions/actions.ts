@@ -13,24 +13,12 @@ import { checkAuth, findPetById } from "@/lib/server-utils";
 
 // Server Actions for users
 export async function logIn(formData: unknown) {
-  // Check if formData is a FormData type
   if (!(formData instanceof FormData)) {
-    return {
-      message: "Invalid form data.",
-    };
+    return;
   }
-
-  // Convert formData to an object
-  const formDataObject = Object.fromEntries(formData.entries());
-  const validatedFormDataObject = authSchema.safeParse(formDataObject);
-
-  if (!validatedFormDataObject.success) {
-    return {
-      message: "Invalid form data.",
-    };
-  }
-
   await signIn("credentials", formData);
+
+  redirect("/app/dashboard");
 }
 
 export async function signUp(formData: FormData) {
