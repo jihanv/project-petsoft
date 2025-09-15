@@ -16,11 +16,9 @@ export type AuthState = { message?: string };
 export async function logIn(formData: unknown) {
   await sleep();
   if (!(formData instanceof FormData)) {
-    cookies().set("flash", "Invalid form data.", { path: "/", maxAge: 10 });
-    return;
-    // return {
-    //   message: "Invalid data.",
-    // };
+    return {
+      message: "Invalid data.",
+    };
   }
   await signIn("credentials", formData);
 
