@@ -27,7 +27,7 @@ export async function logIn(formData: unknown) {
   redirect("/app/dashboard");
 }
 
-export async function signUp(formData: unknown) {
+export async function signUp(prevStat: unknown, formData: unknown) {
   await sleep();
   // Validate form data
   if (!(formData instanceof FormData)) {

@@ -1,13 +1,9 @@
 // components/submit-button.tsx
-"use client";
 import { useFormStatus } from "react-dom";
 import { Button } from "./ui/button";
+import { AuthProps } from "./auth-form";
 
-type AuthFormBtnProps = {
-    type: "logIn" | "signUp"
-}
-
-export function AuthFormBtn({ type }: AuthFormBtnProps) {
+export function AuthFormBtn({ type }: AuthProps) {
     const { pending } = useFormStatus();
     return (<Button disabled={pending}>
         {type === "logIn" ? "Login" : "Sign Up"}
