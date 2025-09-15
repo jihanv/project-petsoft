@@ -39,12 +39,9 @@ export async function logIn(prevStat: unknown, formData: unknown) {
         }
       }
     }
-    return {
-      message: "Could not sign in.",
-    };
+    throw error;
   }
-
-  redirect("/app/dashboard");
+  // redirect("/app/dashboard");
 }
 
 export async function signUp(prevStat: unknown, formData: unknown) {
