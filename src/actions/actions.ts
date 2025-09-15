@@ -10,17 +10,39 @@ import { redirect } from "next/navigation";
 import { checkAuth, findPetById } from "@/lib/server-utils";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
+import { AuthError } from "next-auth";
 export type AuthState = { message?: string };
 
 // Server Actions for users
-export async function logIn(formData: unknown) {
+export async function logIn(prevStat: unknown, formData: unknown) {
   await sleep();
   if (!(formData instanceof FormData)) {
     return {
-      message: "Invalid data.",
+      message: "Invalid form data.",
     };
   }
-  await signIn("credentials", formData);
+
+  try {
+    await signIn("credentials", formData);
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case "CredentialsSignin": {
+          return {
+            message: "Invalid Credentials",
+          };
+        }
+        default: {
+          return {
+            message: "Could not sign in.",
+          };
+        }
+      }
+    }
+    return {
+      message: "Could not sign in.",
+    };
+  }
 
   redirect("/app/dashboard");
 }
@@ -54,7 +76,6 @@ export async function signUp(prevStat: unknown, formData: unknown) {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
-        console.log("Error");
         return {
           message: "Email already exists.",
         };
