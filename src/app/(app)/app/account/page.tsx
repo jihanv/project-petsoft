@@ -1,7 +1,6 @@
 import ContentBlock from "@/components/content-block";
 import H1 from "@/components/h1";
 import SignOutBtn from "@/components/sign-out-btn";
-import { auth } from "@/lib/auth"
 import { checkAuth } from "@/lib/server-utils";
 
 export default async function Page() {
