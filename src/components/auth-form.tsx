@@ -2,6 +2,7 @@ import { logIn, signUp } from "@/actions/actions";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
+import { AuthFormBtn } from "./auth-form-btn";
 
 export type AuthProps = {
     type: "logIn" | "signUp"
@@ -10,6 +11,8 @@ export type AuthProps = {
 
 // DO not forget to include a "name" attribute
 export default function AuthForm({ type }: AuthProps) {
+
+
     return (
         <form
             action={type === "logIn" ? logIn : signUp}>
@@ -21,9 +24,7 @@ export default function AuthForm({ type }: AuthProps) {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" name="password" required />
             </div>
-            <Button>
-                {type === "logIn" ? "Login" : "Sign Up"}
-            </Button>
+            <AuthFormBtn type={type} />
         </form>
 
     )
