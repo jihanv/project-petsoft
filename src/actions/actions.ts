@@ -9,9 +9,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { checkAuth, findPetById } from "@/lib/server-utils";
 import { Prisma } from "@prisma/client";
-import { cookies } from "next/headers";
 import { AuthError } from "next-auth";
 export type AuthState = { message?: string };
+
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // Server Actions for users
 export async function logIn(prevStat: unknown, formData: unknown) {
@@ -90,6 +91,7 @@ export async function logOut() {
     redirectTo: "/",
   });
 }
+
 // Server Actions for Pets
 export async function addPet(petData: unknown) {
   await sleep();
@@ -230,4 +232,28 @@ export async function deletePet(petId: unknown) {
     };
   }
   revalidatePath("/app", "layout");
+}
+
+// Payment actions
+
+export async function createCheckoutSession() {
+  // Authentication check
+  const session = await checkAuth();
+
+  // Create checkout session
+  const checkoutSession = await stripe.checkout.sessions.create({
+    customer_email: session.user.email,
+    line_items: [
+      {
+        price: "price_1S7x0bH4cZ5QmzzehaDsbMW7",
+        quantity: 1,
+      },
+    ],
+    mode: "payment",
+    success_url: `${process.env.CANONICAL_URL}/payment?success=true`,
+    cancel_url: `${process.env.CANONICAL_URL}/payment?cancelled=true`,
+  });
+
+  // Redirect user
+  redirect(checkoutSession.url);
 }
