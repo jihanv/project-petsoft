@@ -78,6 +78,7 @@ const config = {
       if (user) {
         //on sign in
         token.userId = user.id;
+        token.hasAccess = user.hasAccess;
       }
       // this is encrypted
       return token;
@@ -86,6 +87,7 @@ const config = {
     session: ({ session, token }) => {
       if (session.user) {
         session.user.id = token.userId as string;
+        session.user.hasAccess = token.hasAccess as boolean;
       }
       return session;
     },
