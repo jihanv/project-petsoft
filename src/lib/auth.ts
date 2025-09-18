@@ -52,7 +52,7 @@ const config = {
       if (!isLoggedIn && isTryingToAccessApp) {
         return false;
       }
-      if (isLoggedIn && isTryingToAccessApp) {
+      if (isLoggedIn && isTryingToAccessApp && auth?.user.hasAccess) {
         return true;
       }
 
