@@ -4,10 +4,13 @@ import { createCheckoutSession } from "@/actions/actions";
 import H1 from "@/components/h1";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
-
+import { useSession } from "next-auth/react"
 export default function Page({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined }; }) {
 
-    const [isPending, startTransition] = useTransition()
+    const [isPending, startTransition] = useTransition();
+
+    const { update } = useSession()
+
 
     return (
         <main className="flex flex-col item-center space-y-10">
