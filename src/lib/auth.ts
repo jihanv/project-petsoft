@@ -77,22 +77,30 @@ const config = {
 
       return false;
     },
-    jwt: ({ token, user }) => {
+    jwt: async ({ token, user, trigger }) => {
       //on sign in we grab id from the user and attach it to the token
       if (user) {
         //on sign in
         token.userId = user.id;
+        token.email = user.email!;
         token.hasAccess = user.hasAccess;
+      }
+
+      // Updated token
+      if (trigger === "update") {
+        const userFromDb = await findUserByEmail(token.email!);
+        if (userFromDb) {
+          token.hasAccess = userFromDb.hasAccess;
+        }
       }
       // this is encrypted
       return token;
     },
     //accessing user information from the client, attach things to session so we can read from the client
     session: ({ session, token }) => {
-      if (session.user) {
-        session.user.id = token.userId as string;
-        session.user.hasAccess = token.hasAccess as boolean;
-      }
+      session.user.id = token.userId as string;
+      session.user.hasAccess = token.hasAccess as boolean;
+
       return session;
     },
   },

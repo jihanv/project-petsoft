@@ -5,16 +5,27 @@ import H1 from "@/components/h1";
 import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { useSession } from "next-auth/react"
+import { redirect, useRouter } from "next/navigation";
 export default function Page({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined }; }) {
 
     const [isPending, startTransition] = useTransition();
 
+    //Call this update function when searchParams success is in the url.
     const { update } = useSession()
+    const router = useRouter();
+
 
 
     return (
         <main className="flex flex-col item-center space-y-10">
             <H1>PetSoft access requires payment.</H1>
+
+            {searchParams.success && (
+                <Button onClick={async () => {
+                    await update(true);
+                    router.push("/app/dashboard")
+                }}>Access Petsoft</Button>
+            )}
             {
                 !searchParams.success && (<Button
                     disabled={isPending}
