@@ -11,7 +11,7 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
     const [isPending, startTransition] = useTransition();
 
     //Call this update function when searchParams success is in the url.
-    const { update } = useSession()
+    const { update, status, data: session } = useSession()
     const router = useRouter();
 
 
@@ -24,7 +24,9 @@ export default function Page({ searchParams }: { searchParams: { [key: string]: 
                 <Button onClick={async () => {
                     await update(true);
                     router.push("/app/dashboard")
-                }}>Access Petsoft</Button>
+                }}
+                    disabled={status === "loading" || session?.user.hasAccess}
+                >Access Petsoft</Button>
             )}
             {
                 !searchParams.success && (<Button

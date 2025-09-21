@@ -24,4 +24,5 @@ export async function POST(request: Request) {
 }
 
 //Open folder that has stripe then open with cmd.exe
+// stripe login
 // stripe listen --forward-to localhost:3000/api/stripe
