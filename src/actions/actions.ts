@@ -245,13 +245,21 @@ export async function createCheckoutSession() {
     customer_email: session.user.email,
     line_items: [
       {
-        price: "price_1S7x0bH4cZ5QmzzehaDsbMW7",
+        price: "price_1SALN0H4cZ5QmzzeOhLwt2v5",
         quantity: 1,
       },
     ],
     mode: "payment",
-    success_url: `${process.env.CANONICAL_URL}/payment?success=true`,
-    cancel_url: `${process.env.CANONICAL_URL}/payment?cancelled=true`,
+
+    success_url: `${
+      process.env.NGROK_URL || process.env.CANONICAL_URL
+    }/payment?success=true`,
+    cancel_url: `${
+      process.env.NGROK_URL || process.env.CANONICAL_URL
+    }/payment?cancelled=true`,
+
+    // success_url: `${process.env.CANONICAL_URL}/payment?success=true`,
+    // cancel_url: `${process.env.CANONICAL_URL}/payment?cancelled=true`,
   });
 
   // Redirect user
