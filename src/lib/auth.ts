@@ -97,7 +97,10 @@ const config = {
 
       // Updated token
       if (trigger === "update") {
-        await sleep();
+        if (process.env.NODE_ENV === "development") {
+          await sleep();
+        }
+
         const userFromDb = await findUserByEmail(token.email!);
         if (userFromDb) {
           token.hasAccess = userFromDb.hasAccess;

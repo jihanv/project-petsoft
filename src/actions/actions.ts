@@ -16,7 +16,10 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
 // Server Actions for users
 export async function logIn(prevStat: unknown, formData: unknown) {
-  await sleep();
+  if (process.env.NODE_ENV === "development") {
+    await sleep();
+  }
+
   if (!(formData instanceof FormData)) {
     return {
       message: "Invalid form data.",
@@ -46,7 +49,10 @@ export async function logIn(prevStat: unknown, formData: unknown) {
 }
 
 export async function signUp(prevStat: unknown, formData: unknown) {
-  await sleep();
+  if (process.env.NODE_ENV === "development") {
+    await sleep();
+  }
+
   // Validate form data
   if (!(formData instanceof FormData)) {
     return {
@@ -86,7 +92,10 @@ export async function signUp(prevStat: unknown, formData: unknown) {
 }
 
 export async function logOut() {
-  await sleep();
+  if (process.env.NODE_ENV === "development") {
+    await sleep();
+  }
+
   await signOut({
     redirectTo: "/",
   });
@@ -94,7 +103,9 @@ export async function logOut() {
 
 // Server Actions for Pets
 export async function addPet(petData: unknown) {
-  await sleep();
+  if (process.env.NODE_ENV === "development") {
+    await sleep();
+  }
 
   const session = await checkAuth();
 
@@ -127,7 +138,9 @@ export async function addPet(petData: unknown) {
 }
 
 export async function editPet(petId: unknown, petData: unknown) {
-  await sleep();
+  if (process.env.NODE_ENV === "development") {
+    await sleep();
+  }
 
   // Authentication
   const session = await checkAuth();
@@ -182,7 +195,9 @@ export async function editPet(petId: unknown, petData: unknown) {
 }
 
 export async function deletePet(petId: unknown) {
-  await sleep();
+  if (process.env.NODE_ENV === "development") {
+    await sleep();
+  }
 
   // Authentication
   const session = await checkAuth();
