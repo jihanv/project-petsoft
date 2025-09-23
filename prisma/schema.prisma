@@ -5,8 +5,14 @@ generator client {
   provider = "prisma-client-js"
 }
 
+// datasource db {
+//   provider = "sqlite"
+//   url      = env("DATABASE_URL")
+// }
+
+// prisma/schema.prisma
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -37,5 +43,7 @@ model User {
 //npx prisma db migrate
 
 //npx prisma studio
+
+// npx prisma db seed
 
 // https://www.prisma.io/docs/orm/more/help-and-troubleshooting/nextjs-help (best practices)
