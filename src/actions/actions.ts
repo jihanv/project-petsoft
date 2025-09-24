@@ -267,10 +267,10 @@ export async function createCheckoutSession() {
     mode: "payment",
 
     success_url: `${
-      process.env.NGROK_URL || process.env.CANONICAL_URL
+      process.env.CANONICAL_URL || process.env.NGROK_URL
     }/payment?success=true`,
     cancel_url: `${
-      process.env.NGROK_URL || process.env.CANONICAL_URL
+      process.env.CANONICAL_URL || process.env.NGROK_URL
     }/payment?cancelled=true`,
 
     // success_url: `${process.env.CANONICAL_URL}/payment?success=true`,
